@@ -26,6 +26,10 @@
 		./saxpy_par X Y
 		* X cantidad de elementos y Y cantidad de hilos
 	> IntegralesAproximacion:
-		./IntegralesAproximacion
+		./IntegralesAproximacion -flags
+			-a valor de limite inferior
+			-b valor de limite superior
+			-n numero de iteraciones
+			-t numero de hilos
 		* Si se desea aproximar otra funcion se debe modificar la funcion
 		"funcion(x)" con la deseada y recompilar
