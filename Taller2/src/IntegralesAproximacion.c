@@ -22,23 +22,60 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
+#include <unistd.h>
+
+/*
+	Definicion de las funciones
+*/
 
 double aproxIntegral ( double (*f)(double), double ,double, long);
 
-double aproxIntegralPara ( double (*f)(double), double ,double, long);
+double aproxIntegralPara ( double (*f)(double), double ,double, long, int);
 
 double funcion(double);
 
-int main(){
-	int a, b;
-	double n;
+int main(int argc, char* argv[]){
+	double a, b;
+	long n;
+	char bandera;
+	int hilos;
 
-	a = 0; b = 1; // limites de la integral
-	n = 100000000; // valor maximo de iteraciones
+	a = 0; b = 1; // limites de la integral por defecto
+	n = 100000000; // valor maximo de iteraciones por defecto
+	hilos = 2*omp_get_num_procs();// cantidad de hilos por defecto
 
+	// parseo de los argumentos
+	while ((bandera = getopt (argc, argv, "a:b:n:t:")) != -1)
+		switch (bandera) {
+			case 'a':
+				a = (double) atoi(optarg);
+				break;
+
+			case 'b':
+				b = (double) atoi(optarg);
+				break;
+
+			case 'n':
+				n = (long) atoi(optarg);
+				break;
+
+			case 't':
+				hilos = atoi(optarg);
+				break;
+
+			case '?':
+				fprintf(stderr,"Argumento invalido\n");
+				exit(1);
+
+			default:
+				exit(1);
+
+		}
+
+	printf("Valores: a=%lf, b=%lf, n=%ld \n",a,b,n );
 	printf("> Realizando el calculo...\n");
 	aproxIntegral(funcion, a, b, n);
-	aproxIntegralPara(funcion, a, b, n);
+	aproxIntegralPara(funcion, a, b, n, hilos);
 
 	return 0;
 
@@ -58,18 +95,19 @@ double aproxIntegral ( double (*f)(double), double a, double b , long n){
 
 	tiempoEjecucion = omp_get_wtime() - tiempoInicio;
 
-	printf("Tiempo Serie tomado: %fs\n",tiempoEjecucion);
+	printf("\nTiempo Serie tomado: %fs\n",tiempoEjecucion);
 
 	resultado = ( (b-a)/n )*( ( (*f)(a) + (*f)(b) )/2 + suma );
 	printf(">> Resultado: %lf\n", resultado);
+
 	return resultado;
 }
 
-double aproxIntegralPara ( double (*f)(double), double a, double b , long n){
+double aproxIntegralPara ( double (*f)(double), double a, double b , long n, int hilos){
 	long k;
 	double suma, tiempoInicio, tiempoEjecucion, resultado;
 
-	//omp_set_num_threads(2);
+	omp_set_num_threads(hilos);
 	tiempoInicio = omp_get_wtime();
 
 	#pragma omp parallel
@@ -81,12 +119,12 @@ double aproxIntegralPara ( double (*f)(double), double a, double b , long n){
 	  	}
 	}
 
-
 	tiempoEjecucion = omp_get_wtime() - tiempoInicio;
-	printf("Tiempo Paralelo tomado: %fs, con %i hilos\n",tiempoEjecucion, 2);
+	printf("\nTiempo Paralelo tomado: %fs, con %i hilos\n",tiempoEjecucion, hilos);
 
 	resultado = ( (b-a)/n )*( ( (*f)(a) + (*f)(b) )/2 + suma );
 	printf(">> Resultado: %lf\n", resultado);
+	
 	return resultado;
 }
 
@@ -94,6 +132,6 @@ double aproxIntegralPara ( double (*f)(double), double a, double b , long n){
 	Aqui se defina la funcion que se quiere integrar
 */
 double funcion(double x){
-	return 4/(1+x*x);
+	return 4/(1+x*x); // mofificar con la funcion deseada
 
 }

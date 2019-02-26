@@ -21,6 +21,11 @@
 		make clean
 
 > Para ejecutar:
+	> Saxpy:
 		./saxpy X
 		./saxpy_par X Y
-	* X cantidad de elementos y Y cantidad de hilos
+		* X cantidad de elementos y Y cantidad de hilos
+	> IntegralesAproximacion:
+		./IntegralesAproximacion
+		* Si se desea aproximar otra funcion se debe modificar la funcion
+		"funcion(x)" con la deseada y recompilar

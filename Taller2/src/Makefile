@@ -1,4 +1,4 @@
-all: saxpy saxpy_par pi pi_par
+all: saxpy saxpy_par pi pi_par IntegralesAproximacion
 
 saxpy_par:saxpy_par.c
 		gcc -Wall saxpy_par.c -fopenmp -o saxpy_par
