@@ -1,6 +1,6 @@
 all: saxpy saxpy_par pi pi_par
 
-saxpy_par:saxpy_par.c
+saxpy_par:saxpy_par.o
 		gcc -Wall saxpy_par.c -fopenmp -o saxpy_par
 
 saxpy:saxpy.c
@@ -12,12 +12,16 @@ pi_par:pi_par.c
 pi:pi.c
 		gcc -Wall pi.c -fopenmp -o pi
 
+b:
+		gcc -Wall -c pi_par.c
+		# gcc -Wall -c pi_par.c -fopenmp
+		gcc -Wall pi_par.o -fopenmp -o pi_par
+
 clean:
 		rm -f *.o
 		rm -f saxpy
 		rm -f pi_par
 		rm -f saxpy_par
 		rm -f pi
-		clear
 
 .PHONY: clean b
