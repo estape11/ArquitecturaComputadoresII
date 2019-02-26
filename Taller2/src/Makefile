@@ -12,12 +12,16 @@ pi_par:pi_par.c
 pi:pi.c
 		gcc -Wall pi.c -fopenmp -o pi
 
+IntegralesAproximacion:IntegralesAproximacion.c
+		gcc -Wall IntegralesAproximacion.c -fopenmp -o IntegralesAproximacion
+
 clean:
 		rm -f *.o
 		rm -f saxpy
 		rm -f pi_par
 		rm -f saxpy_par
 		rm -f pi
+		rm -f IntegralesAproximacion
 		clear
 
 .PHONY: clean b

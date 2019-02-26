@@ -1,3 +1,24 @@
+/*
+*******************************************************************
+
+				Instituto Tecnológico de Costa Rica
+					Ingeniería en Computadores
+
+		Programador: Esteban Agüero Pérez (estape11)
+		Lenguaje: C++
+		Versión: 1.0
+		Última Modificación: 26/02/2019
+
+		Entradas: Cantidad de elementos
+		Restricciones: Deber ser un número
+		Salidas: Tiempo tomado en realizar SAXPY serie
+
+				Arquitectura de Computadores II
+				Prof. Jeferson González Gómez
+
+*******************************************************************
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
